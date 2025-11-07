@@ -53,7 +53,7 @@ export function AppSidebar({ className = '', isMobile = false, onClose }: Custom
     },
 
       {
-      title: 'Orders',
+      title: 'Orders11',
       url: '/orders',
       icon: Package,
       // badge: '3', // Optional: Show number of new orders
