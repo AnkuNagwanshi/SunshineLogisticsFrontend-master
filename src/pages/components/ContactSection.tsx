@@ -47,20 +47,20 @@ const ContactSection = () => {
                                     </div>
                                     <div className="flex items-center gap-4">
                                         <Mail className="w-6 h-6 text-primary" />
-                                        <p className="text-gray-600">naresh.kumar@slservices.in</p>
+                                        <p className="text-gray-600">info@slservices.in</p>
                                     </div>
                                     <div className="flex items-center gap-4">
                                         <Phone className="w-6 h-6 text-primary" />
                                         <div className="text-gray-600">
-                                            <p>+91-9991115845</p>
-                                            <p>+91-9518099121</p>
+                                            <p>+91-99911 15845</p>
+                                            {/* <p>+91-9518099121</p> */}
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div className="bg-white p-6 rounded-lg shadow-lg">
-                                <h3 className="text-xl font-bold mb-4 text-gray-800">Branch Office - Mumbai</h3>
+                                <h3 className="text-xl font-bold mb-4 text-gray-800">Branch Office - Panchkula Haryana</h3>
                                 <div className="flex items-start gap-4">
                                     <MapPin className="w-6 h-6 text-primary mt-1" />
                                     <p className="text-gray-600">Kopar, Bhiwandi-421302</p>

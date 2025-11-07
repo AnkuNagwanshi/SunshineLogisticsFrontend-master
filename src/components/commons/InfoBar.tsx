@@ -7,11 +7,11 @@ const InfoBar = () => {
             <div className="flex-1 bg-black text-white py-1 px-4 flex items-center space-x-4">
                 <div className="flex items-center space-x-2">
                     <Mail size={16} className="mr-2 text-primary" />
-                    <span>naresh.kumar@slservices.in</span>
+                    <span>info@slservices.in</span>
                 </div>
                 <div className="flex bg-black flex items-center">
                     <Phone size={16} className="mr-2 text-primary" />
-                    <span>+91-9991115845 / +91-9518099121</span>
+                    <span>+91-99911 15845</span>
                 </div>
             </div>
 

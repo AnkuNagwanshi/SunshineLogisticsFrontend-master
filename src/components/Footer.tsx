@@ -150,13 +150,13 @@ const Footer = () => {
               {/* Email */}
               <div className="flex items-center gap-3 text-gray-300 transition-colors">
                 <Mail size={16} className="text-primary" />
-                <span>naresh.kumar@slservices.in</span>
+                <span>info@slservices.in</span>
               </div>
 
               {/* Phone / WhatsApp */}
               <div className="flex items-center gap-3 text-gray-300 transition-colors">
                 <Phone size={16} className="text-primary" />
-                <span>+91-9991115845</span>
+                <span>+91-99911 15845</span>
                 {/* <span>+91-9518099121</span> */}
               </div>
             </div>
