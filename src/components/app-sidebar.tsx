@@ -39,6 +39,12 @@ export function AppSidebar({ className = '', isMobile = false, onClose }: Custom
   // Define all navigation items with their allowed roles
   const allNavItems: NavItem[] = [
     {
+      title: 'Add Customer',
+      url: '/add-customer',
+      icon: UserPlus,
+      roles: ['admin']
+    },
+    {
       title: 'Customers',
       url: '/customer-users',
       icon: Users,

@@ -15,6 +15,7 @@ import { RegisterPage } from "@/components/auth/Register";
 
 // Lazy-loaded components - Dashboard (Admin)
 const CustomerUsers = lazy(() => import("@/components/dashboard/CustomerUsers"));
+const AddCustomerForm =lazy(()=>import("@/components/dashboard/AddCustomer"))
 const DeliveryAgent = lazy(() => import("@/components/dashboard/DeliveryAgent"));
 const Orders = lazy(() => import("@/components/dashboard/Orders"));
 
@@ -43,6 +44,7 @@ const AppRoutes = () => {
         {/* Protected Dashboard Routes */}
         <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
           <Route path="/customer-users" element={<CustomerUsers />} />
+          <Route path="/add-customer" element={<AddCustomerForm />} />
           <Route path="/delivery-agent" element={<DeliveryAgent />} />
         </Route>
 

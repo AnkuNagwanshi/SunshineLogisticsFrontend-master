@@ -22,7 +22,7 @@ export interface TableFilter {
 }
 
 export interface ColumnDef<T> {
-  key: keyof T | 'actions'
+  key: keyof T | 'actions' | 'info'
   label: string
   render?: (row: T) => ReactNode
 }
