@@ -52,13 +52,17 @@ export function LoginPage() {
       case 'adminuser':
         navigate('/customer-users', { replace: true })
         break
+        case 'sub_admin':
+        navigate('/customer-users', { replace: true })
+        break
       case 'delivery_agent':
       case 'deliveryagentuser':
         navigate('/orders', { replace: true })
         break
       case 'customer':
       case 'customeruser':
-        navigate('/request-pickup', { replace: true })
+        // navigate('/request-pickup', { replace: true })
+        navigate("/") // to hame page
         break
       default:
         // If role doesn't match any known role, redirect to event page as fallback

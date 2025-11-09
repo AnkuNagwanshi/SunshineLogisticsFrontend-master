@@ -53,7 +53,7 @@ axiosInstance.interceptors.request.use((config) => {
   const role = sessionStorage.getItem("userRole");
   let token = null;
 
-  if (role === "admin") token = sessionStorage.getItem("adminToken");
+  if (role === "admin" || role === "sub_admin") token = sessionStorage.getItem("adminToken");
   else if (role === "delivery_agent") token = sessionStorage.getItem("agentToken");
   else if (role === "customer") token = sessionStorage.getItem("customerToken");
 

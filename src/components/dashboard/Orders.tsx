@@ -231,9 +231,9 @@ export default function CreateOrders() {
 
       let res;
 
-      // Admin fetches all orders
-      if (userRole === "admin") {
-        res = await axiosInstance.get("/api/orders", {
+      // Admin or Sub-Admin fetches all orders
+      if (userRole === "admin" || userRole === "sub_admin") {
+         res = await axiosInstance.get("/api/orders", {
           // headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
       }

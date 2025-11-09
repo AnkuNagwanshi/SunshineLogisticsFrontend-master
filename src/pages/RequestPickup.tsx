@@ -8,7 +8,8 @@ interface Order {
     id: number;
     customer_id: number;
     tracking_number: string;
-    awb_number: string;
+    //awb_number: string;
+    customer_reference_number:string;
     invoice_url: string;
     origin: string;
     destination: string;

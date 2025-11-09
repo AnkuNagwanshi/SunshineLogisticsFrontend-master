@@ -69,7 +69,7 @@ const Footer = () => {
             <h2 className="text-lg font-semibold mb-3">Our Services</h2>
             <ul className="space-y-2 text-sm">
                <li>
-                <Link to="/request-pickup" className="flex items-center gap-3 text-gray-300 hover:text-primary transition-colors">
+                <Link to="/request-pickup" className="flex items-center gap-3 text-gray-300 hover:text-primary transition-colors pointer-events-none">
                   <Truck size={16} className="text-primary" />
                   <span>Request Pickup</span>
                 </Link>

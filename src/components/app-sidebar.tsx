@@ -42,28 +42,40 @@ export function AppSidebar({ className = '', isMobile = false, onClose }: Custom
       title: 'Add Customer',
       url: '/add-customer',
       icon: UserPlus,
-      roles: ['admin']
+      roles: ['admin', 'sub_admin'] // Both admin and sub_admin
     },
     {
       title: 'Customers',
       url: '/customer-users',
       icon: Users,
-      roles: ['admin']
+      roles: ['admin', 'sub_admin'] // Both admin and sub_admin
+    },
+    
+    {
+      title: 'Pickup',
+      url: '/pickup',
+      icon: Package,
+      roles: ['admin', 'sub_admin'] // Both admin and sub_admin
     },
 
-     {
-      title: 'Agents',
-      url: '/delivery-agent',
-      icon: UserPlus,
-      roles: ['admin']
-    },
-
-      {
+    {
       title: 'Orders',
       url: '/orders',
       icon: Package,
       // badge: '3', // Optional: Show number of new orders
-      roles: ['admin', 'delivery_agent']
+      roles: ['admin', 'sub_admin', 'delivery_agent'] // All three roles
+    }, 
+     {
+      title: 'Agents',
+      url: '/delivery-agent',
+      icon: UserPlus,
+      roles: ['admin', 'sub_admin'] // Both admin and sub_admin
+    },
+    {
+      title: 'Sub Admin',
+      url: '/add-subadmin',
+      icon: UserPlus,
+      roles: ['admin'] // Only main admin can access
     },
 
   ]
@@ -120,6 +132,8 @@ export function AppSidebar({ className = '', isMobile = false, onClose }: Custom
                 <p className="text-xs text-gray-500">
                   {role === 'admin'
                     ? 'Admin Panel'
+                    : role === 'sub_admin'
+                    ? 'Sub-Admin Panel'
                     : role === 'delivery_agent'
                     ? 'Agent Panel' : 'Agent Panel'}
                 </p>

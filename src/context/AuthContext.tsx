@@ -7,7 +7,7 @@ interface User {
   firstName?: string;  
   lastName?: string;   
   email: string;
-  role: "admin" | "delivery_agent" | "customer" | string;
+  role: "admin" | "sub_admin" | "delivery_agent" | "customer" | string;
 }
 
 interface AuthContextType {
@@ -40,6 +40,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     switch (userData.role) {
       case "admin":
+      case "sub_admin": // Sub-admin uses same token storage as admin
         sessionStorage.setItem("adminToken", token);
         break;
       case "delivery_agent":
@@ -62,6 +63,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     switch (role) {
       case "admin":
+      case "sub_admin": // Sub-admin uses same token as admin
         return sessionStorage.getItem("adminToken");
       case "delivery_agent":
         return sessionStorage.getItem("agentToken");
@@ -77,7 +79,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const role = sessionStorage.getItem("userRole");
 
     // Remove tokens based on role
-    if (role === "admin") {
+    if (role === "admin" || role === "sub_admin") {
       sessionStorage.removeItem("adminToken");
     } else if (role === "delivery_agent") {
       sessionStorage.removeItem("agentToken");
@@ -96,8 +98,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // Redirect based on role
     if (role === "customer") {
       navigate("/"); // home page
-    } else {
-      navigate("/login"); // admin/agent login page
+    } else if (role === "admin" || role === "sub_admin") {
+      navigate("/admin"); // admin panel
+    }
+    else{
+       navigate("/login"); //agent login page
     }
   };
 
