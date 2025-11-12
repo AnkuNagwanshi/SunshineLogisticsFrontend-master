@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 
 // Core components (non-lazy, critical path)
 import { ProtectedRoute } from "@/components/ProtectedRoute";
-import { CustomerProtectedRoute } from "@/components/CustomerProtectedRoute";
+//import { CustomerProtectedRoute } from "@/components/CustomerProtectedRoute";
 import AppLayout from "@/layout/AppLayout";
 
 // import components - Auth

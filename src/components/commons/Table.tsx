@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react'
 import type { ReactNode } from 'react'
 import { Download, Search } from 'lucide-react'
-import { Table as UITable, TableBody, TableCell, TableHeader, TableRow } from '../ui/table'
+//import { Table as UITable, TableBody, TableCell, TableHeader, TableRow } from '../ui/table'
 import { Input } from '../ui/input'
 import { FilterableTableHead } from './FilterableTableHead'
 import { getAllUniqueColumnValues, applyColumnFilters, applySearchFilter } from '../../lib/tableUtils'
