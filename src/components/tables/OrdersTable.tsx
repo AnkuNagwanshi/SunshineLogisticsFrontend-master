@@ -155,8 +155,8 @@ const OrderDetailsDialog = ({ order }: { order: OrderData }) => {
             <p className="text-gray-900">{order.tracking_number}</p>
           </div>
           <div>
-            <p className="text-sm font-medium text-gray-600">AWB Number</p>
-            <p className="text-gray-900">{order.awb_number}</p>
+            <p className="text-sm font-medium text-gray-600">Customer Reference No</p>
+            <p className="text-gray-900">{order.customer_reference_number || 'N/A'}</p>
           </div>
           <div>
             <p className="text-sm font-medium text-gray-600">Order Created Date</p>
@@ -356,7 +356,7 @@ export default function OrderTable({
           {row.status.replace("_", " ")}
         </span>
 
-        {(userRole === "delivery_agent" || userRole === "admin") && nextOptions.length > 0 && (
+        {(userRole === "delivery_agent" || userRole === "admin" || userRole === "sub_admin") && nextOptions.length > 0 && (
           <>
             <Select
               defaultValue=""
@@ -475,9 +475,9 @@ export default function OrderTable({
       render: (row) => <div className="font-medium">{row.tracking_number}</div>,
     },
     {
-      key: "awb_number",
-      label: "AWB No",
-      render: (row) => <span>{row.awb_number}</span>,
+      key: "customer_reference_number",
+      label: "Cutomer Ref No",
+      render: (row) => <span>{row.customer_reference_number}</span>,
     },
     {
       key: "createdAt",
@@ -528,7 +528,7 @@ export default function OrderTable({
       key: "assign_agent",
       label: "Assign Agent",
       render: (row) =>
-        userRole === "admin" ? (
+        userRole === "admin" || userRole === "sub_admin" ? (
           <Select
             defaultValue={row.deliveryAgent?.id?.toString() || ""}
             disabled={assigning === row.id}
@@ -595,7 +595,7 @@ export default function OrderTable({
       {loading ? (
         <p className="text-center py-10 text-gray-500">Loading...</p>
       ) : (
-        <CommonTable data={filteredOrders} columns={columns} />
+        <CommonTable data={filteredOrders} columns={columns} userRole={userRole} />
       )}
     </div>
   );

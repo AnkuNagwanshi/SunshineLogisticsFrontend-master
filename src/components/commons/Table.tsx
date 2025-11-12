@@ -22,7 +22,7 @@ export interface TableFilter {
 }
 
 export interface ColumnDef<T> {
-  key: keyof T | 'actions'
+  key: keyof T | 'actions' | 'info'
   label: string
   render?: (row: T) => ReactNode
 }
@@ -32,26 +32,53 @@ interface CommonTableProps<T extends Record<string, any>> {
   columns: ColumnDef<T>[]
   filters?: TableFilter[]
   searchPlaceholder?: string
+  userRole?: string // Add userRole prop
 }
 
 const downloadAsExcel = <T extends Record<string, unknown>>(data: T[], filename: string = 'exported-data') => {
-  // Convert data to CSV format
-  const headers = Object.keys(data[0] || {}).join(',')
-  const rows = data.map((item) => Object.values(item).join(','))
-  const csv = [headers, ...rows].join('\n')
+  if (!data || data.length === 0) {
+    alert('No data to export');
+    return;
+  }
 
-  // Create blob and download
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
-  const url = URL.createObjectURL(blob)
-  const link = document.createElement('a')
-  link.setAttribute('href', url)
-  link.setAttribute('download', `${filename}.csv`)
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
+  // Get headers from first object
+  const headers = Object.keys(data[0]);
+  
+  // Format header row with proper capitalization
+  const headerRow = headers.map(h => h.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())).join(',');
+  
+  // Format data rows - handle special characters and quotes
+  const rows = data.map((item) => {
+    return headers.map(header => {
+      const value = item[header];
+      // Handle null/undefined
+      if (value == null) return '';
+      // Convert to string and escape quotes
+      const stringValue = String(value).replace(/"/g, '""');
+      // Wrap in quotes if contains comma, newline, or quotes
+      if (stringValue.includes(',') || stringValue.includes('\n') || stringValue.includes('"')) {
+        return `"${stringValue}"`;
+      }
+      return stringValue;
+    }).join(',');
+  });
+  
+  const csv = [headerRow, ...rows].join('\n');
+
+  // Add BOM for proper Excel UTF-8 encoding
+  const BOM = '\uFEFF';
+  const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', `${filename}_${new Date().toISOString().split('T')[0]}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
 }
 
-export function CommonTable<T extends Record<string, any>>({ data, columns, filters = [], searchPlaceholder = 'Search' }: CommonTableProps<T>) {
+export function CommonTable<T extends Record<string, any>>({ data, columns, filters = [], searchPlaceholder = 'Search', userRole }: CommonTableProps<T>) {
   const sidebarExpanded = useAppSelector((state) => state.sidebarExpanded.isExpanded)
   const [searchQuery, setSearchQuery] = useState('')
   const [columnFilters, setColumnFilters] = useState<Record<string, string[]>>({})
@@ -145,55 +172,65 @@ export function CommonTable<T extends Record<string, any>>({ data, columns, filt
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          <Button onClick={() => downloadAsExcel(filteredData)} className="bg-green-500 hover:bg-green-600 text-white gap-2">
-            <Download className="w-4 h-4" />
-            Export to Excel
-          </Button>
+          {/* Export Button - Only for Main Admin */}
+          {userRole === "admin" && (
+            <Button onClick={() => downloadAsExcel(filteredData)} className="bg-green-500 hover:bg-green-600 text-white gap-2">
+              <Download className="w-4 h-4" />
+              Export to Excel
+            </Button>
+          )}
         </div>
       </div>
 
       {/*Common Table */}
-      <div className="border rounded-lg mt-6 ">
+      <div className="border rounded-lg mt-6 overflow-hidden">
         <div
-          className={`max-h-[calc(100vh-230px)] overflow-auto w-full
+          className={`max-h-[calc(100vh-230px)] overflow-y-auto overflow-x-auto w-full
             ${sidebarExpanded ? 'lg:max-w-[calc(100vw-170px)]' : 'lg:max-w-[calc(100vw-140px)]'}
           `}
         >
-          <div className="min-w-max">
-            <UITable>
-              <TableHeader className="sticky top-0 bg-white z-10">
-                <TableRow>
-                  {columns.map((column) => (
+          <table className="w-full caption-bottom text-sm min-w-max">
+            <thead 
+              className="bg-white z-50 shadow-sm [&_tr]:border-b"
+              style={{
+                position: 'sticky',
+                top: 0
+              }}
+            >
+              <tr className="hover:bg-muted/50 bg-gray-100 border-b transition-colors">
+                {columns.map((column) => (
+                  <th key={column.key.toString()} className="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap">
                     <FilterableTableHead
-                      key={column.key.toString()}
                       column={column.label}
                       uniqueValues={uniqueColumnValues[column.key]}
                       selectedValues={columnFilters[column.key.toString()] || []}
                       onFilterChange={(_, values) => handleFilterChange(column.key.toString(), values)}
                       onSort={(_, direction) => handleSort(column.key.toString(), direction)}
                     />
-                  ))}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredData.length > 0 ? (
-                  filteredData.map((row, index) => (
-                    <TableRow key={index}>
-                      {columns.map((column) => (
-                        <TableCell key={column.key.toString()}>{column.render ? column.render(row) : row[column.key]}</TableCell>
-                      ))}
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={columns.length} className="text-center py-4">
-                      No results found
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </UITable>
-          </div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="[&_tr:last-child]:border-0">
+              {filteredData.length > 0 ? (
+                filteredData.map((row, index) => (
+                  <tr key={index} className="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors">
+                    {columns.map((column) => (
+                      <td key={column.key.toString()} className="p-2 align-middle whitespace-nowrap">
+                        {column.render ? column.render(row) : row[column.key]}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={columns.length} className="text-center py-4 p-2 align-middle">
+                    No results found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
     </>

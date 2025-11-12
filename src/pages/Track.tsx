@@ -20,7 +20,8 @@ import { formatDate } from "@/components/commons/formatDate";
 interface OrderStatus {
   id: number;
   tracking_number: string;
-  awb_number: string;
+  //awb_number: string;
+  customer_reference_number:string;
   invoice_url: string | null;
   sender_name: string;
   sender_address: string;
@@ -232,7 +233,7 @@ const Track = () => {
           </h2>
 
           <div className="grid grid-cols-2 gap-4 text-sm">
-            <p><span className="font-medium">AWB:</span> {order.awb_number}</p>
+            <p><span className="font-medium">Customer REF No.:</span> {order.customer_reference_number}</p>
             <p><span className="font-medium">Tracking No:</span> {order.tracking_number}</p>
             {order.sender_name && <p><span className="font-medium">Sender:</span> {order.sender_name}</p>}
             {order.receiver_name && <p><span className="font-medium">Receiver:</span> {order.receiver_name}</p>}

@@ -14,7 +14,10 @@ import { RegisterPage } from "@/components/auth/Register";
 
 
 // Lazy-loaded components - Dashboard (Admin)
+const GeneratePickupForm =lazy(()=>import("@/components/dashboard/GeneratePickup"))
+const SubAdminManagement=lazy(()=>import("@/components/dashboard/SubAdminManagement"))
 const CustomerUsers = lazy(() => import("@/components/dashboard/CustomerUsers"));
+const AddCustomerForm =lazy(()=>import("@/components/dashboard/AddCustomer"))
 const DeliveryAgent = lazy(() => import("@/components/dashboard/DeliveryAgent"));
 const Orders = lazy(() => import("@/components/dashboard/Orders"));
 
@@ -40,13 +43,19 @@ const AppRoutes = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/customer-registration" element={<RegisterPage />} />
 
-        {/* Protected Dashboard Routes */}
-        <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+        {/* Protected Dashboard Routes - Admin & Sub-Admin */}
+        <Route element={<ProtectedRoute allowedRoles={["admin", "sub_admin"]} />}>
           <Route path="/customer-users" element={<CustomerUsers />} />
+          <Route path="/add-customer" element={<AddCustomerForm />} />
           <Route path="/delivery-agent" element={<DeliveryAgent />} />
+          <Route path="/pickup" element={<GeneratePickupForm />} />
+        </Route>
+        {/* Sub-Admin Management - Main Admin Only */}
+        <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+          <Route path="/add-subadmin" element={<SubAdminManagement/>}/>
         </Route>
 
-        <Route element={<ProtectedRoute allowedRoles={["admin", "delivery_agent"]} />}>
+        <Route element={<ProtectedRoute allowedRoles={["admin", "sub_admin", "delivery_agent"]} />}>
           <Route path="/orders" element={<Orders />} />
         </Route>
 

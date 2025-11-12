@@ -40,14 +40,16 @@ export default function AdminLogin() {
   const redirectUserByRole = (userRole: string) => {
     switch (userRole.toLowerCase()) {
       case 'admin':
+      case 'sub_admin': // Add sub_admin support
       case 'adminuser':
         navigate('/customer-users', { replace: true });
         break;
+      case 'delivery_agent':
       case 'agentuser':
         navigate('/orders', { replace: true });
         break;
       default:
-        // If role doesn't match any known role, redirect to event page as fallback
+        // If role doesn't match any known role, redirect to orders page as fallback
         navigate('/orders', { replace: true });
         break;
     }

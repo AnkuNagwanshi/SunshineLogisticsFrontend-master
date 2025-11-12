@@ -16,19 +16,15 @@ import CustomerUsersTable from '../tables/CustomerUsersTable'
 
 interface CustomerUsersData {
   id: number;
-  avatar?: File | null | string;
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
-  // password?: string;
-  mobile: number;
+  mobile: string;
   companyName: string;
-  country: string;
-  state: string;
-  city: string;
+  gstNumber: string;
   address: string;
+  pincode: string;
+  pickupAddress: string[];
   role: string;
-  info?: string;
 }
 
 const CustomerUsers = () => {
@@ -41,40 +37,44 @@ const CustomerUsers = () => {
   // Fetch all delivery agents
   const getAllCustomerUsers = async (forceRefresh = false) => {
     try {
-      if (forceRefresh) setIsRefreshing(true)
-      else setIsLoading(true)
-      setError(null)
+      if (forceRefresh) setIsRefreshing(true);
+      else setIsLoading(true);
 
-      const response = await axiosInstance.get(`${import.meta.env.VITE_API_BASE_URL}/api/customers`)
-      const responseData = Array.isArray(response.data) ? response.data : []
+      setError(null);
 
-      const mappedCustomers = responseData.map((customers: any) => ({
-        id: customers.id,
-        avatar: customers.avatar ? `${import.meta.env.VITE_API_BASE_URL}${customers.avatar}` : null,
-        firstName: customers.firstName,
-        lastName: customers.lastName,
-        email: customers.email,
-        mobile: customers.mobile,
-        companyName: customers.companyName,
-        country: customers.country,
-        state: customers.state,
-        city: customers.city,
-        address: customers.address,
-        role: customers.role,
-        // password: customers.password || null,
+      const response = await axiosInstance.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/add_customer`
+      );
+
+      // handle both possible response formats
+      const responseData = response.data?.customers || response.data || [];
+
+      const mappedCustomers = responseData.map((customer: any) => ({
+        id: customer.id,
+        name: customer.name || "N/A",
+        email: customer.email || "N/A",
+        mobile: customer.mobile || "N/A",
+        companyName: customer.companyName || "N/A",
+        gstNumber: customer.gstNumber || "N/A",
+        address: customer.address || "N/A",
+        pincode: customer.pincode || "N/A",
+        pickupAddress: Array.isArray(customer.pickupAddress)
+  ? customer.pickupAddress
+  : [],
+
+        role: customer.role || "Customer",
       }));
 
       setCustomers(mappedCustomers);
-
     } catch (err) {
-      console.error('Error fetching customers users:', err)
-      setError('Failed to load customers users.')
-      toast.error('Failed to load customers users.')
+      console.error("❌ Error fetching customers:", err);
+      setError("Failed to load customers.");
+      toast.error("Failed to load customers.");
     } finally {
-      setIsLoading(false)
-      setIsRefreshing(false)
+      setIsLoading(false);
+      setIsRefreshing(false);
     }
-  }
+  };
 
   useEffect(() => {
     getAllCustomerUsers()
@@ -120,9 +120,9 @@ const CustomerUsers = () => {
             {/* <Button onClick={() => setIsAddOpen(true)}>Add First Customer User</Button> */}
           </div>
         ) : (
-          <CustomerUsersTable data={customers}
+           <CustomerUsersTable data={customers} refreshCustomers={getAllCustomerUsers} />
           // onEdit={handleEditAgent} onDelete={handleDeleteAgent} 
-          />
+          
         )}
       </div>
 

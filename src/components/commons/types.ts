@@ -13,7 +13,8 @@ export type OrderData = {
   orderType?: "assigned" | "city-based";
   delivery_agent_id?: number;
   tracking_number: string;
-  awb_number: string;
+  //awb_number: string;
+  customer_reference_number:string;
   createdAt: string;
   pickup_date: string;
   expected_delivery_date: string;

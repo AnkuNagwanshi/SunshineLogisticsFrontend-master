@@ -190,11 +190,11 @@ const Navbar = () => {
             <div className="flex items-center space-x-4">
               {!user ? (
                 <>
-                  {/* Login button */}
-                  <Button className=" text-black bg-transparent font-medium border border-black px-6 py-3 rounded-md transition-all duration-300 hover:bg-transparent hover:text-black hover:shadow-[-4px_4px_0px_black] hover:translate-x-1 hover:-translate-y-1 " > <Link to="/login" className="flex items-center"> Login </Link> </Button>
+                  {/* Login button  if you want to enable these button then you have to remove this class :pointer-events-none */}
+                  <Button className=" text-black bg-transparent font-medium border border-black px-6 py-3 rounded-md transition-all duration-300 hover:bg-transparent hover:text-black hover:shadow-[-4px_4px_0px_black] hover:translate-x-1 hover:-translate-y-1 pointer-events-none" > <Link to="/login" className="flex items-center"> Login </Link> </Button>
 
                   {/* Register button */}
-                  <Button className=" text-white bg-primary font-medium px-6 py-3 rounded-md transition-all duration-300 hover:bg-primary/90 hover:text-white hover:shadow-[-4px_4px_0px_black] hover:translate-x-1 hover:-translate-y-1 " > <Link to="/customer-registration" className="flex items-center"> Register </Link> </Button>
+                  <Button className=" text-white bg-primary font-medium px-6 py-3 rounded-md transition-all duration-300 hover:bg-primary/90 hover:text-white hover:shadow-[-4px_4px_0px_black] hover:translate-x-1 hover:-translate-y-1 pointer-events-none " > <Link to="/customer-registration" className="flex items-center"> Register </Link> </Button>
                 </>
               ) : (
                 // Avatar with Dropdown when logged in
