@@ -112,16 +112,16 @@ export function RegisterPage() {
 
 
   // Handle avatar preview
-  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    setValue("avatar", file);
-    if (file) {
-      const objectUrl = URL.createObjectURL(file);
-      setPreview(objectUrl);
-    } else {
-      setPreview(null);
-    }
-  };
+  // const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0] || null;
+  //   setValue("avatar", file);
+  //   if (file) {
+  //     const objectUrl = URL.createObjectURL(file);
+  //     setPreview(objectUrl);
+  //   } else {
+  //     setPreview(null);
+  //   }
+  // };
 
   // Form submission
   const onSubmit = async (data: CustomerFormData) => {

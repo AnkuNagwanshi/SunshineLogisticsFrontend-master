@@ -1,4 +1,4 @@
-import { Truck, Package, Globe, Clock, Shield, Warehouse } from "lucide-react";
+//import { Truck, Package, Globe, Clock, Shield, Warehouse } from "lucide-react";
 
 const ServicesSection = () => {
  const services = [
